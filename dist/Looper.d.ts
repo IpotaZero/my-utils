@@ -6,6 +6,6 @@ export declare class Looper {
     constructor(fps: number);
     setFPS(fps: number): void;
     start(): void;
-    addHandler(handler: () => void): void;
+    addHandler(handler: (timeScale: number) => void): void;
     private loop;
 }

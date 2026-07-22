@@ -19,7 +19,7 @@ export class Looper {
         requestAnimationFrame(() => this.loop())
     }
 
-    addHandler(handler: () => void) {
+    addHandler(handler: (timeScale: number) => void) {
         this.handlers.push(handler)
     }
 
