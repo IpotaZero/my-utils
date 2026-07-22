@@ -2,7 +2,9 @@ export class Looper {
     private lastRunTime = 0
     private interval: number
 
-    private handlers: (() => void)[] = []
+    private handlers: ((timeScale: number) => void)[] = []
+
+    timeScale = 1
 
     constructor(fps: number) {
         this.interval = 1000 / fps
@@ -27,7 +29,7 @@ export class Looper {
         const elapsed = currentTime - this.lastRunTime
 
         if (this.interval - 3 <= elapsed) {
-            this.handlers.forEach((h) => h())
+            this.handlers.forEach((h) => h((elapsed / this.interval) * this.timeScale))
             this.lastRunTime = currentTime
         }
 

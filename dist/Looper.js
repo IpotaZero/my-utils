@@ -2,6 +2,7 @@ export class Looper {
     lastRunTime = 0;
     interval;
     handlers = [];
+    timeScale = 1;
     constructor(fps) {
         this.interval = 1000 / fps;
     }
@@ -19,7 +20,7 @@ export class Looper {
         const currentTime = performance.now();
         const elapsed = currentTime - this.lastRunTime;
         if (this.interval - 3 <= elapsed) {
-            this.handlers.forEach((h) => h());
+            this.handlers.forEach((h) => h((elapsed / this.interval) * this.timeScale));
             this.lastRunTime = currentTime;
         }
         requestAnimationFrame(() => this.loop());

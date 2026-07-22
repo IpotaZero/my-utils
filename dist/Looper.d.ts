@@ -2,6 +2,7 @@ export declare class Looper {
     private lastRunTime;
     private interval;
     private handlers;
+    timeScale: number;
     constructor(fps: number);
     setFPS(fps: number): void;
     start(): void;
