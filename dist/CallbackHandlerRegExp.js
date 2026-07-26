@@ -7,10 +7,10 @@ export class CallbackHandlerRegExp {
     on(code, handler) {
         this.handlers.add(code, handler);
     }
-    run(code, arg) {
-        return this.handlers
+    async run(code, arg) {
+        return (await Promise.all(this.handlers
             .getAll(code)
             .map((handler) => handler(arg))
-            .every(Boolean);
+            .toArray())).every(Boolean);
     }
 }

@@ -6,14 +6,18 @@ import { RegExpDict } from "./RegExpDict"
 export class CallbackHandlerRegExp<Code extends string, Arg> {
     private readonly handlers = new RegExpDict<(arg: Arg) => Promise<boolean> | void>({})
 
-    on(code: Code, handler: (arg: Arg) => void) {
+    on(code: Code, handler: (arg: Arg) => Promise<boolean> | void) {
         this.handlers.add(code, handler)
     }
 
-    run(code: Code, arg: Arg) {
-        return this.handlers
-            .getAll(code)
-            .map((handler) => handler(arg))
-            .every(Boolean)
+    async run(code: Code, arg: Arg) {
+        return (
+            await Promise.all(
+                this.handlers
+                    .getAll(code)
+                    .map((handler) => handler(arg))
+                    .toArray(),
+            )
+        ).every(Boolean)
     }
 }
