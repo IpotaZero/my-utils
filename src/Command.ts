@@ -16,6 +16,7 @@ export class Command {
         html: string,
         private readonly input: DigitalInput.Reader<"ok" | "cancel" | "up" | "down">,
     ) {
+        this.container.id = "command"
         this.container.className = "hidden"
         this.container.innerHTML = html
 
