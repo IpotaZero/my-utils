@@ -88,4 +88,18 @@ export var GenUtils;
         }
     }
     GenUtils.sequence = sequence;
+    function* waitForPromise(promise) {
+        let state;
+        promise.then((value) => {
+            state = { ok: true, value };
+        }, (error) => {
+            state = { ok: false, error };
+        });
+        while (state === undefined)
+            yield;
+        if (!state.ok)
+            throw state.error;
+        return state.value;
+    }
+    GenUtils.waitForPromise = waitForPromise;
 })(GenUtils || (GenUtils = {}));

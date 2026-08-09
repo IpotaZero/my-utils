@@ -87,4 +87,22 @@ export namespace GenUtils {
             yield* gen
         }
     }
+
+    export function* waitForPromise<T>(promise: Promise<T>): Generator<void, T, void> {
+        let state: { ok: true; value: T } | { ok: false; error: unknown } | undefined
+
+        promise.then(
+            (value) => {
+                state = { ok: true, value }
+            },
+            (error) => {
+                state = { ok: false, error }
+            },
+        )
+
+        while (state === undefined) yield
+
+        if (!state.ok) throw state.error
+        return state.value
+    }
 }

@@ -57,4 +57,5 @@ export declare namespace GenUtils {
      * ])
      */
     function sequence(gens: Generator<void, void, unknown>[]): Generator<void, void, unknown>;
+    function waitForPromise<T>(promise: Promise<T>): Generator<void, T, void>;
 }
