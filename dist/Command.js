@@ -9,8 +9,7 @@ export class Command {
     ch = new CallbackHandlerRegExp();
     constructor(html, input) {
         this.input = input;
-        this.container.id = "command";
-        this.container.className = "hidden";
+        this.container.className = "command hidden";
         this.container.innerHTML = html;
         this.initButtonFamily();
         this.goto("first");
