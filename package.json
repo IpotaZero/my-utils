@@ -15,7 +15,7 @@
     ],
     "scripts": {
         "build": "tsc",
-        "update": "npm login && npm version patch && npm publish",
+        "update": "npm version patch && npm publish",
         "first": "npm version patch && npm publish --access public"
     },
     "devDependencies": {
