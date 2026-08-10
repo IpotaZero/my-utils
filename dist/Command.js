@@ -17,7 +17,7 @@ export class Command {
             this.container.classList.remove("hidden");
         });
     }
-    getElement(query, cls = HTMLElement) {
+    getElement(query, cls) {
         const e = this.container.querySelector(query);
         if (!e) {
             throw new Error("");
@@ -93,6 +93,8 @@ export class Command {
     select() {
         const currentButtons = this.getCurrentButtons();
         if (!currentButtons)
+            return;
+        if (currentButtons[this.index].disabled)
             return;
         const link = currentButtons[this.index]?.dataset["link"];
         if (link) {

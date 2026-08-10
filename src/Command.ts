@@ -27,7 +27,7 @@ export class Command {
         })
     }
 
-    getElement(query: string, cls: typeof HTMLElement = HTMLElement) {
+    getElement<C extends typeof HTMLElement>(query: string, cls: C) {
         const e = this.container.querySelector(query)
 
         if (!e) {
@@ -38,7 +38,7 @@ export class Command {
             throw new Error("")
         }
 
-        return e
+        return e as InstanceType<C>
     }
 
     getIndex() {
@@ -124,6 +124,7 @@ export class Command {
     private select() {
         const currentButtons = this.getCurrentButtons()
         if (!currentButtons) return
+        if (currentButtons[this.index].disabled) return
 
         const link = currentButtons[this.index]?.dataset["link"]
         if (link) {
