@@ -22,7 +22,7 @@ export class Command {
         if (!e) {
             throw new Error("");
         }
-        if (!(e instanceof cls)) {
+        if (!(e instanceof (cls ?? HTMLElement))) {
             throw new Error("");
         }
         return e;

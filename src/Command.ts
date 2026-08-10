@@ -27,14 +27,14 @@ export class Command {
         })
     }
 
-    getElement<C extends typeof HTMLElement>(query: string, cls: C) {
+    getElement<C extends typeof HTMLElement>(query: string, cls?: C) {
         const e = this.container.querySelector(query)
 
         if (!e) {
             throw new Error("")
         }
 
-        if (!(e instanceof cls)) {
+        if (!(e instanceof (cls ?? HTMLElement))) {
             throw new Error("")
         }
 
