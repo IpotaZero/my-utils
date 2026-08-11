@@ -17,6 +17,9 @@ export class Command {
             this.container.classList.remove("hidden");
         });
     }
+    getHistory() {
+        return this.history;
+    }
     getElement(query, cls) {
         const e = this.container.querySelector(query);
         if (!e) {

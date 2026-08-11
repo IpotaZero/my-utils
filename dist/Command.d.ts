@@ -9,6 +9,7 @@ export declare class Command {
     private buttonFamily;
     private ch;
     constructor(html: string, input: DigitalInput.Reader<"ok" | "cancel" | "up" | "down">);
+    getHistory(): readonly string[];
     getElement<C extends typeof HTMLElement>(query: string, cls?: C): InstanceType<C>;
     getIndex(): number;
     update(): void;

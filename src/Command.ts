@@ -27,6 +27,10 @@ export class Command {
         })
     }
 
+    getHistory(): readonly string[] {
+        return this.history
+    }
+
     getElement<C extends typeof HTMLElement>(query: string, cls?: C) {
         const e = this.container.querySelector(query)
 
