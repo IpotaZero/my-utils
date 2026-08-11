@@ -4,6 +4,7 @@ export class Command {
     container = document.createElement("div");
     index = 0;
     currentBranch = "unused-id";
+    indexHistory = [];
     history = [];
     buttonFamily = {};
     ch = new CallbackHandlerRegExp();
@@ -16,6 +17,9 @@ export class Command {
         requestAnimationFrame(() => {
             this.container.classList.remove("hidden");
         });
+    }
+    getIndexHistory() {
+        return this.indexHistory;
     }
     getHistory() {
         return this.history;
@@ -87,6 +91,8 @@ export class Command {
             throw new Error("空");
         this.history.pop();
         const prevId = this.history.pop();
+        this.indexHistory.pop();
+        this.indexHistory.pop();
         const buttons = this.buttonFamily[prevId];
         const index = Math.max(buttons.findIndex((b) => b.dataset["link"] === this.currentBranch), 0);
         this.goto(prevId);
@@ -109,8 +115,9 @@ export class Command {
         this.currentBranch = id;
         this.ch.run(`on-enter-${this.currentBranch}`, this);
         if (this.buttonFamily[id]) {
-            this.index = 0;
+            this.indexHistory.push(this.index);
             this.history.push(id);
+            this.index = 0;
             this.updateClass();
         }
     }

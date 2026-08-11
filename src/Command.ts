@@ -7,6 +7,7 @@ export class Command {
     readonly container = document.createElement("div")
     private index = 0
     private currentBranch = "unused-id"
+    private indexHistory: number[] = []
     private history: string[] = []
 
     private buttonFamily: Record<string, HTMLButtonElement[]> = {}
@@ -25,6 +26,10 @@ export class Command {
         requestAnimationFrame(() => {
             this.container.classList.remove("hidden")
         })
+    }
+
+    getIndexHistory(): readonly number[] {
+        return this.indexHistory
     }
 
     getHistory(): readonly string[] {
@@ -113,6 +118,9 @@ export class Command {
         this.history.pop()
         const prevId = this.history.pop()!
 
+        this.indexHistory.pop()
+        this.indexHistory.pop()
+
         const buttons = this.buttonFamily[prevId]!
         const index = Math.max(
             buttons.findIndex((b) => b.dataset["link"] === this.currentBranch),
@@ -142,8 +150,9 @@ export class Command {
         this.ch.run(`on-enter-${this.currentBranch}`, this)
 
         if (this.buttonFamily[id]) {
-            this.index = 0
+            this.indexHistory.push(this.index)
             this.history.push(id)
+            this.index = 0
             this.updateClass()
         }
     }

@@ -5,10 +5,12 @@ export declare class Command {
     readonly container: HTMLDivElement;
     private index;
     private currentBranch;
+    private indexHistory;
     private history;
     private buttonFamily;
     private ch;
     constructor(html: string, input: DigitalInput.Reader<"ok" | "cancel" | "up" | "down">);
+    getIndexHistory(): readonly number[];
     getHistory(): readonly string[];
     getElement<C extends typeof HTMLElement>(query: string, cls?: C): InstanceType<C>;
     getIndex(): number;
