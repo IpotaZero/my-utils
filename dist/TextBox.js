@@ -21,10 +21,12 @@ export class TextBox {
     }
     *say(texts, config = {}) {
         this.reset();
+        this.box.classList.remove("hidden");
         for (const text of texts) {
             yield* this.saySingle(text, config);
             yield;
         }
+        this.box.classList.add("hidden");
     }
     *ask(options, { cancelable = false } = {}) {
         this.reset();
@@ -69,14 +71,12 @@ export class TextBox {
     *saySingle(text, { name = "", charInterval = 2, canSkip = true }) {
         this.name.innerHTML = name;
         this.text.innerHTML = "";
-        this.box.classList.remove("hidden");
         this.box.classList.remove("text-box--done");
         this.box.classList.add("text-box--typing");
         yield* this.typeText(text, charInterval, canSkip);
         this.box.classList.remove("text-box--typing");
         this.box.classList.add("text-box--done");
         yield* this.wait();
-        this.box.classList.add("hidden");
     }
     /**
      * 1文字ずつ表示していく。ok入力で即時全文表示にスキップする。
@@ -93,7 +93,8 @@ export class TextBox {
                 continue;
             for (let f = 0; f < interval; f++) {
                 yield;
-                if (canSkip && this.input.isPushed("ok")) {
+                if (canSkip &&
+                    (this.input.isRepeatPushed("ok", 500, 1000) || this.input.isRepeatPushed("cancel", 500, 1000))) {
                     this.text.innerHTML = text;
                     yield;
                     return;
@@ -102,7 +103,7 @@ export class TextBox {
         }
     }
     *wait() {
-        while (!this.input.isPushed("ok"))
+        while (!(this.input.isRepeatPushed("ok", 500, 1000) || this.input.isRepeatPushed("cancel", 500, 1000)))
             yield;
         yield;
     }

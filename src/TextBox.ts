@@ -33,11 +33,14 @@ export class TextBox {
 
     *say(texts: readonly string[], config: TalkConfig = {}) {
         this.reset()
+        this.box.classList.remove("hidden")
 
         for (const text of texts) {
             yield* this.saySingle(text, config)
             yield
         }
+
+        this.box.classList.add("hidden")
     }
 
     ask<Length extends number>(options: readonly string[] & { length: Length }): Generator<void, LessThan<Length>, void>
@@ -97,7 +100,6 @@ export class TextBox {
         this.name.innerHTML = name
         this.text.innerHTML = ""
 
-        this.box.classList.remove("hidden")
         this.box.classList.remove("text-box--done")
         this.box.classList.add("text-box--typing")
 
@@ -107,8 +109,6 @@ export class TextBox {
         this.box.classList.add("text-box--done")
 
         yield* this.wait()
-
-        this.box.classList.add("hidden")
     }
 
     /**
@@ -129,7 +129,10 @@ export class TextBox {
             for (let f = 0; f < interval; f++) {
                 yield
 
-                if (canSkip && this.input.isPushed("ok")) {
+                if (
+                    canSkip &&
+                    (this.input.isRepeatPushed("ok", 500, 1000) || this.input.isRepeatPushed("cancel", 500, 1000))
+                ) {
                     this.text.innerHTML = text
                     yield
                     return
@@ -139,7 +142,7 @@ export class TextBox {
     }
 
     private *wait() {
-        while (!this.input.isPushed("ok")) yield
+        while (!(this.input.isRepeatPushed("ok", 500, 1000) || this.input.isRepeatPushed("cancel", 500, 1000))) yield
         yield
     }
 }
