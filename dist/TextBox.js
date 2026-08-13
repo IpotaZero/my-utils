@@ -86,6 +86,7 @@ export class TextBox {
     *typeText(text, interval, canSkip) {
         const tokens = text.match(/<[^>]+>|[\s\S]/g) ?? [];
         let revealed = "";
+        yield;
         for (const token of tokens) {
             revealed += token;
             this.text.innerHTML = revealed;
